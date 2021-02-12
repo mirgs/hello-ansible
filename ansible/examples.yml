@@ -1,0 +1,7 @@
+- hosts: localhost
+  tasks:
+    - name: Crear usuario 'mirgs' y añadirlo al grupo devops
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
