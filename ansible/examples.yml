@@ -1,7 +1,33 @@
 - hosts: localhost
   tasks:
     - name: Crear usuario 'mirgs' y añadirlo al grupo devops
-      apt:
-        name: apache2
-        state: latest
-        update_cache: yes
+      user:
+        name: mirgs
+        shell: /bin/bash
+        groups: devops
+        append: yes
+
+    - name: Copiar el fichero mirgs.txt a su home de usuario
+      copy:
+        src: ./mirgs.txt  
+        dest: /homr/mirgs/
+        owner: mirgs
+        groups: devops
+        mode: 0644
+
+    - name: print uptime/load average and save it into uptime.txt
+      shell: uptime >> uptime.txt
+      args:
+        chdir: /home/mirgs/
+
+    - name: Using a template
+      vars:
+        env: staging
+      template:
+        src: ./my_app_conf.j2  
+        dest: /etc/my_app.conf
+      become: true
+        append: yes
+
+
+
